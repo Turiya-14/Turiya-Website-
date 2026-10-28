@@ -1,0 +1,269 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  
+  --color-primary: #3A0E5C;
+  --color-primary-hover: #2B0A45;
+  --color-primary-light: #F6F4F9;
+  --color-accent: #A62BFF;
+  --color-accent-hover: #8D18E4;
+  --color-orange-accent: #F2810F;
+  --color-charcoal: #241733;
+  --color-grey: #6B6478;
+  --color-warm-bg: #F6F4F9;
+  --color-white-bg: #FFFFFF;
+  --color-surface-bg: #FFFFFF;
+  --color-surface-card: #FFFFFF;
+  --color-text-primary: #241733;
+  --color-text-secondary: #6B6478;
+  --color-border-subtle: #e9e7ec;
+  --color-success-green: #25d366;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: var(--color-surface-bg);
+  color: var(--color-text-primary);
+}
+
+/* Custom scrollbar to keep it looking clean and professional */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8f9ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c3c6d7;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a4b8;
+}
+
+/* Accessibility: Respect user prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Drishtee Logo Frame Specific Styling */
+.drishtee-logo-frame {
+  background: #262d69;
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 240px;
+}
+
+.drishtee-logo-frame img {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: 44px;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  .drishtee-logo-frame {
+    padding: 10px 14px;
+  }
+
+  .drishtee-logo-frame img {
+    max-width: 160px;
+    height: 38px;
+  }
+}
+
+:root {
+  --creative-house-green: #5ABD7A;
+}
+
+/* Standardised Partner Logo Frame */
+.partner-logo-frame {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.partner-logo-frame--light {
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid rgba(48, 19, 86, 0.07);
+}
+
+.partner-logo-frame--creative-house {
+  padding: 14px 20px;
+  background: var(--creative-house-green);
+  border: 1px solid var(--creative-house-green);
+}
+
+.creative-house-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 205px;
+  max-height: 62px;
+  object-fit: contain;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.partner-logo-frame--framefox {
+  padding: 10px 16px;
+  background: #050505;
+  border: 1px solid #050505;
+}
+
+.framefox-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 220px;
+  max-height: 72px;
+  object-fit: contain;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.partner-logo-frame img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 190px;
+  max-height: 60px;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+/* Founder Photo Frame & Header Composition */
+.founder-card {
+  container-name: founder-card;
+  container-type: inline-size;
+  overflow: visible;
+}
+
+.founder-header {
+  display: grid;
+  grid-template-columns: minmax(190px, 220px) minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+}
+
+.founder-photo-frame {
+  width: 220px;
+  max-width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  flex-shrink: 0;
+  padding: 10px;
+  border: 1px solid rgba(126, 55, 255, 0.25);
+  border-radius: 18px;
+  background: transparent;
+  box-shadow: 0 10px 28px rgba(48, 19, 86, 0.12);
+  justify-self: center;
+  box-sizing: border-box;
+}
+
+.founder-photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  border: 0;
+  border-radius: 12px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.founder-identity {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.founder-name {
+  margin: 0;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  font-size: clamp(2rem, 4cqw, 2.5rem);
+  line-height: 1.08;
+}
+
+.founder-title {
+  margin-top: 8px;
+  max-width: 100%;
+}
+
+@container founder-card (max-width: 560px) {
+  .founder-header {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .founder-photo-frame {
+    width: min(240px, 78%);
+    justify-self: center;
+  }
+
+  .founder-identity {
+    width: 100%;
+    text-align: center;
+  }
+
+  .founder-name {
+    font-size: clamp(2rem, 8cqw, 2.5rem);
+  }
+}
+
+@media (max-width: 1200px) {
+  .founder-header {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .founder-photo-frame {
+    justify-self: center;
+  }
+
+  .founder-identity {
+    text-align: center;
+  }
+}

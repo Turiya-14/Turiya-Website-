@@ -1,0 +1,8 @@
+# Netlify build settings. Security/cache headers live in public/_headers,
+# SPA fallback in public/_redirects (both are copied into dist/ by Vite).
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
