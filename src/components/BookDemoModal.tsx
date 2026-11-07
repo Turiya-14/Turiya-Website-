@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, FormEvent } from "react";
-import { X, Calendar, Clock, CheckCircle2, ChevronRight, Building2, User, Mail, Loader2, AlertCircle } from "lucide-react";
+import { X, Calendar, Clock, CheckCircle2, ChevronRight, Building2, User, Mail, AlertCircle, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { DemoBookingData } from "../types";
 import TuriyaLogo from "./TuriyaLogo";
-import { submitForm, FORM_FALLBACK_MESSAGE } from "../utils/submitForm";
-import { logger } from "../utils/logger";
+import { buildEnquiryMessage, openWhatsApp } from "../utils/whatsapp";
 
 interface BookDemoModalProps {
   isOpen: boolean;
@@ -55,8 +54,8 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
     timeSlot: TIME_SLOTS[0],
     notes: ""
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [whatsAppUrl, setWhatsAppUrl] = useState("");
 
   const modalRef = useRef<HTMLDivElement>(null);
   const lastActiveElementRef = useRef<HTMLElement | null>(null);
@@ -138,32 +137,32 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
     };
   }, [isOpen, onClose]);
 
-  const handleSubmit = async (e: FormEvent) => {
+  // "2026-10-29" -> "Thu, 29 Oct 2026"
+  const formatDate = (key: string) =>
+    new Date(`${key}T00:00:00`).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return;
-    if (!formData.name.trim() || !formData.email.trim() || !formData.company.trim()) {
+    if (!formData.name.trim() || !formData.company.trim()) {
       setSubmitError("Please fill out all required fields.");
       return;
     }
-    setIsSubmitting(true);
     setSubmitError("");
-    try {
-      await submitForm("demo-request", {
-        name: formData.name,
-        email: formData.email,
-        company: formData.company,
-        solution: selectedSolution,
-        date: formData.date,
-        timeSlot: formData.timeSlot,
-        notes: formData.notes || ""
-      });
-      setStep(3);
-    } catch (err) {
-      logger.error("Demo request submission failed", err);
-      setSubmitError(FORM_FALLBACK_MESSAGE);
-    } finally {
-      setIsSubmitting(false);
-    }
+    const message = buildEnquiryMessage(
+      "Demo Request – Turiya Infotech",
+      [
+        ["Name", formData.name],
+        ["Company", formData.company],
+        ["Email", formData.email],
+        ["Solution", selectedSolution],
+        ["Preferred date", formatDate(formData.date)],
+        ["Preferred time", formData.timeSlot]
+      ],
+      formData.notes
+    );
+    // Opened synchronously inside the submit event so browsers allow it
+    setWhatsAppUrl(openWhatsApp(message));
+    setStep(3);
   };
 
   const handleNextStep = () => {
@@ -361,13 +360,12 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
 
                     <div>
                       <label htmlFor="demo-email" className="block text-xs font-semibold text-slate-600 mb-1">
-                        Work Email <span className="text-primary" aria-hidden="true">*</span>
+                        Work Email
                       </label>
                       <div className="relative">
                         <input
                           id="demo-email"
                           type="email"
-                          required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           placeholder="sagar@company.com"
@@ -427,12 +425,11 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
                     </button>
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-primary/20 hover:bg-primary-hover transition-colors disabled:opacity-75 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-primary/20 hover:bg-primary-hover transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                       id="submit-demo-booking"
                     >
-                      {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />}
-                      {isSubmitting ? "Sending request..." : "Request Demo Call"}
+                      <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                      Request Demo on WhatsApp
                     </button>
                   </div>
                 </form>
@@ -444,9 +441,9 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
                     <CheckCircle2 className="h-10 w-10 stroke-[2]" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">Demo Request Received!</h3>
+                    <h3 className="text-lg font-bold text-slate-900">Your demo request is ready in WhatsApp</h3>
                     <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                      We'll email <span className="font-semibold text-slate-700">{formData.email}</span> to confirm your slot and share the meeting link.
+                      Just tap <span className="font-semibold text-slate-700">Send</span> in WhatsApp. We'll confirm your slot and share the meeting link there.
                     </p>
                   </div>
 
@@ -458,7 +455,7 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
                     <div className="flex justify-between">
                       <span className="text-slate-500">Requested slot:</span>
                       <span className="font-semibold text-slate-800 flex items-center gap-1">
-                        <Calendar className="h-3 w-3 text-primary" aria-hidden="true" /> {formData.date} at {formData.timeSlot.split(" - ")[0]}
+                        <Calendar className="h-3 w-3 text-primary" aria-hidden="true" /> {formatDate(formData.date)}, {formData.timeSlot.split(" - ")[0]}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -472,6 +469,15 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
                   </div>
 
                   <div className="pt-4 flex flex-col gap-2">
+                    <a
+                      href={whatsAppUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#25D366] py-2.5 text-xs font-semibold text-white hover:bg-[#1fb857] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    >
+                      <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                      WhatsApp didn't open? Tap here
+                    </a>
                     <button
                       type="button"
                       onClick={() => {
@@ -483,7 +489,7 @@ export default function BookDemoModal({ isOpen, onClose }: BookDemoModalProps) {
                       Done
                     </button>
                     <p className="text-[10px] text-slate-400">
-                      Need a different time? Just reply to our confirmation email.
+                      Need a different time? Just mention it in the WhatsApp chat.
                     </p>
                   </div>
                 </div>

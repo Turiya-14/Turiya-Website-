@@ -1,16 +1,15 @@
-import { Mail, Phone, MapPin, Send, Loader2, CheckCircle2, Building, User, HelpCircle, ShieldCheck } from "lucide-react";
+import { useState } from "react";
+import { Mail, Phone, MapPin, CheckCircle2, Building, User, HelpCircle, ShieldCheck, MessageCircle } from "lucide-react";
 import { useContactForm } from "../hooks/useContactForm";
-import { submitForm } from "../utils/submitForm";
+import { buildEnquiryMessage, openWhatsApp } from "../utils/whatsapp";
 
 export default function ContactSection() {
+  const [whatsAppUrl, setWhatsAppUrl] = useState("");
   const {
     values,
     errors,
     touched,
-    isSubmitting,
     submitStatus,
-    honeypot,
-    setHoneypot,
     handleChange,
     handleBlur,
     handleSubmit,
@@ -23,15 +22,19 @@ export default function ContactSection() {
       industry: "Select Industry",
       message: ""
     },
-    onSubmit: (formValues) =>
-      submitForm("contact", {
-        fullName: formValues.fullName,
-        email: formValues.email,
-        company: formValues.company,
-        industry: formValues.industry,
-        message: formValues.message,
-        source: "Home page"
-      })
+    onSubmit: (formValues) => {
+      const message = buildEnquiryMessage(
+        "New Website Enquiry – Turiya Infotech",
+        [
+          ["Name", formValues.fullName],
+          ["Company", formValues.company],
+          ["Email", formValues.email],
+          ["Industry", formValues.industry]
+        ],
+        formValues.message
+      );
+      setWhatsAppUrl(openWhatsApp(message));
+    }
   });
 
   const industries = [
@@ -122,7 +125,7 @@ export default function ContactSection() {
                 <span>Your details stay private</span>
               </div>
               <p className="text-grey leading-relaxed text-[11px]">
-                Enquiries are sent over an encrypted (HTTPS) connection and used only to respond to you. We never sell your data to third parties.
+                Your enquiry goes straight to our team on WhatsApp and is used only to respond to you. We never sell your data to third parties.
               </p>
             </div>
           </div>
@@ -131,7 +134,7 @@ export default function ContactSection() {
           <div className="lg:col-span-7 bg-white border border-slate-200/80 rounded-md p-6 md:p-8 relative">
             <div className="space-y-1 mb-6 text-left font-sans">
               <h3 className="font-bold text-primary text-lg font-display">Send a Message</h3>
-              <p className="text-grey text-sm">Fill out the form below and our team will get back to you within 24 hours.</p>
+              <p className="text-grey text-sm">Fill in your details and your enquiry opens in WhatsApp, ready to send to our team.</p>
             </div>
 
             {submitStatus === "success" ? (
@@ -141,43 +144,33 @@ export default function ContactSection() {
                   <CheckCircle2 className="h-8 w-8 stroke-[2] text-accent" aria-hidden="true" />
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-primary font-display">Message sent. Thank you!</h4>
+                  <h4 className="text-lg font-bold text-primary font-display">Your enquiry is ready in WhatsApp</h4>
                   <p className="text-xs text-grey mt-1 max-w-md mx-auto">
-                    Thanks, <span className="font-semibold text-charcoal">{values.fullName}</span>. Our team will reply to <span className="font-semibold text-charcoal">{values.email}</span> within one business day.
+                    Thanks, <span className="font-semibold text-charcoal">{values.fullName}</span>. Just tap <span className="font-semibold text-charcoal">Send</span> in WhatsApp and our team will reply there.
                   </p>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                  <a
+                    href={whatsAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-md bg-[#25D366] hover:bg-[#1fb857] text-white px-5 py-2 text-xs font-semibold transition-colors font-sans focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                    WhatsApp didn't open? Tap here
+                  </a>
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="rounded-md bg-primary hover:bg-primary-hover text-white px-5 py-2 text-xs font-semibold transition-colors font-sans focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    className="rounded-md border border-primary/25 text-primary hover:bg-primary/5 px-5 py-2 text-xs font-semibold transition-colors font-sans focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    Submit Another Query
+                    New Enquiry
                   </button>
                 </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 text-left font-sans" noValidate>
-                {errors.global && (
-                  <div className="p-3 bg-red-50 border border-red-100 rounded-md text-red-600 text-xs flex items-start gap-2" role="alert">
-                    <span>{errors.global}</span>
-                  </div>
-                )}
-
-                {/* Honeypot field (hidden visually, used to catch automated bots) */}
-                <div className="absolute left-[-9999px] top-[-9999px] hidden" aria-hidden="true">
-                  <label htmlFor="sec_verify_section">Verify Website Security - Do not fill</label>
-                  <input
-                    id="sec_verify_section"
-                    type="text"
-                    value={honeypot}
-                    onChange={(e) => setHoneypot(e.target.value)}
-                    autoComplete="off"
-                    tabIndex={-1}
-                  />
-                </div>
-
                 <div className="grid gap-4 sm:grid-cols-2">
                   {/* Full Name */}
                   <div className="space-y-1">
@@ -212,14 +205,13 @@ export default function ContactSection() {
                   {/* Work Email */}
                   <div className="space-y-1">
                     <label htmlFor="section_email" className="block text-xs font-semibold text-charcoal">
-                      Work Email <span className="text-accent" aria-hidden="true">*</span>
+                      Work Email
                     </label>
                     <div className="relative">
                       <input
                         id="section_email"
                         name="email"
                         type="email"
-                        required
                         value={values.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                         onBlur={() => handleBlur("email")}
@@ -334,20 +326,10 @@ export default function ContactSection() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 rounded-md bg-primary hover:bg-primary-hover py-3 text-xs font-semibold text-white shadow-md shadow-primary/20 transition-all cursor-pointer font-sans focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-75 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-2 rounded-md bg-primary hover:bg-primary-hover py-3 text-xs font-semibold text-white shadow-md shadow-primary/20 transition-all cursor-pointer font-sans focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin text-accent" aria-hidden="true" />
-                        Sending your message...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
-                        Submit Request
-                      </>
-                    )}
+                    <MessageCircle className="h-4 w-4 text-accent" aria-hidden="true" />
+                    Send Enquiry on WhatsApp
                   </button>
                 </div>
               </form>
