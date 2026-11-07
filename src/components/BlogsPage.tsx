@@ -11,7 +11,6 @@ interface BlogTopic {
   date: string;
   readTime: string;
   author: string;
-  isSample?: boolean;
   content?: string[];
 }
 
@@ -37,6 +36,79 @@ export default function BlogsPage({ slug, onNavigate }: BlogsPageProps) {
   const blogData: BlogTopic[] = [
     // --- WHATSAPP & CPAAS ---
     {
+      slug: "whatsapp-service-messages-are-no-longer-free-october-2026",
+      title: "WhatsApp Service Messages Are No Longer Free: What Changed on 1 October 2026",
+      category: "WhatsApp & CPaaS",
+      excerpt: "Meta now charges for WhatsApp service messages after the first 1,000 each month, and for utility templates sent inside the 24-hour window. Here is what changed, what it costs in India, and how to keep your bill under control.",
+      date: "November 07, 2026",
+      readTime: "6 min read",
+      author: "Turiya Editorial Team",
+      content: [
+        "For almost two years, replying to customers on the WhatsApp Business API cost nothing. If a customer messaged you first, every reply you sent within the next 24 hours was free. That changed on 1 October 2026. Meta now charges for service messages beyond a monthly free allowance, and for utility templates sent inside the customer service window.",
+        "If your business uses WhatsApp for customer support, appointment confirmations, order updates or chatbot replies, this affects your monthly bill. Here is a plain explanation of what changed and what you can do about it.",
+        "## What exactly changed",
+        "Service messages are the free-form replies you send while a customer service window is open, that is, within 24 hours of the customer's last message. Most chatbot replies and support-team replies fall into this category.",
+        "From 1 October 2026, each WhatsApp Business phone number gets 1,000 free service messages every calendar month. From the 1,001st message onwards, every delivered service message is charged. The allowance is per phone number, resets on the first of each month, and unused messages do not carry forward.",
+        "Utility templates (order confirmations, payment receipts, appointment reminders and similar updates) sent inside an open 24-hour window used to be free. They are now charged from the very first message, and the 1,000 free service messages do not cover them.",
+        "Marketing and authentication templates were already chargeable, so nothing new applies to them.",
+        "## How much it costs in India",
+        "Service messages are charged at the same rate as utility messages in the recipient's country. For numbers in India, that works out to roughly ₹0.14 per delivered message, before taxes. Meta can revise its rates every quarter, so always confirm the current figure on Meta's official rate card or with your WhatsApp provider before budgeting.",
+        "As an example, a clinic that sends 3,000 chatbot and support replies a month would pay for 2,000 of them. At about ₹0.14 each, that is around ₹280 a month, plus whatever utility templates it sends. For most small and mid-sized businesses the increase is modest, but for high-volume support desks it adds up quickly.",
+        "## What is still free",
+        "Messages your customers send to you remain free. You are only charged for what your business sends.",
+        "Conversations that start from a Click-to-WhatsApp ad or the WhatsApp button on your Facebook Page open a free entry point window. Messages you send in that window, including templates, are not charged. Windows opened from Click-to-WhatsApp ads can now stay open for up to 7 days, and windows from Facebook Page buttons for 72 hours.",
+        "## AI replies through Meta's own agent",
+        "If you use Meta Business Agent, Meta's built-in AI assistant for WhatsApp, its replies have been charged separately since 1 August 2026, based on how much AI processing each reply uses. Chatbots built by your own team or a provider such as Turiya Infotech are not charged this way. Their replies are counted as normal service messages.",
+        "## Five ways to keep costs under control",
+        "1. Make each reply count. Combine information into fewer, clearer messages instead of sending several short ones. A well-designed chatbot flow can often answer in one message what a manual reply takes three to say.",
+        "2. Use buttons and lists. Interactive replies help customers get to the right answer faster, which means fewer back-and-forth messages.",
+        "3. Use Click-to-WhatsApp ads for campaigns. Conversations that start from these ads get a free window of up to 7 days, which makes them the most cost-effective way to handle enquiries from marketing campaigns.",
+        "4. Review which updates really need a template. Some utility templates sent inside the window can be replaced by a normal service reply, which is free within your monthly 1,000.",
+        "5. Track usage per phone number. Each number has its own 1,000 free messages, so monitor volumes monthly and plan before you cross the threshold.",
+        "## What this means for your business",
+        "WhatsApp is still one of the most cost-effective ways to talk to customers in India. Delivery and read rates are far higher than email, and a rupee spent on a well-planned WhatsApp flow usually goes further than any other channel. The new pricing simply rewards businesses that design their conversations carefully.",
+        "Turiya Infotech helps businesses audit their current WhatsApp usage, redesign chatbot flows to need fewer messages, and set up Click-to-WhatsApp campaigns that make the most of free windows. If you would like us to review your setup and estimate your new monthly cost, send us a message on WhatsApp."
+      ]
+    },
+    {
+      slug: "marketing-utility-authentication-and-service-messages-explained",
+      title: "Marketing, Utility, Authentication, and Service Messages: Explained Simply",
+      category: "WhatsApp & CPaaS",
+      excerpt: "Every WhatsApp Business API message falls into one of four categories, and each one is priced differently. Here is what each category means, with examples, updated for Meta's October 2026 pricing.",
+      date: "November 07, 2026",
+      readTime: "6 min read",
+      author: "Turiya Editorial Team",
+      content: [
+        "On the WhatsApp Business API, every message your business sends falls into one of four categories: marketing, utility, authentication, or service. The category decides whether Meta approves your template, and how much you pay for each delivered message. Choosing the right category saves money and keeps your account in good standing.",
+        "Here is what each category means, with simple examples. This guide reflects Meta's pricing as of 1 October 2026.",
+        "## 1. Marketing messages",
+        "Marketing messages promote your business: offers, new product launches, festive greetings, event invitations, re-engagement messages and newsletters. If the main goal of a message is to sell, promote or bring a customer back, Meta treats it as marketing.",
+        "Examples: \"Diwali sale, flat 20% off this weekend\", \"Admissions open for the 2027 batch\", \"We miss you. Here's a coupon for your next visit\".",
+        "Marketing is the most expensive category and is charged for every delivered message. Customers must have opted in to receive messages from you, and Meta may limit how many marketing messages a person receives from businesses in a day.",
+        "## 2. Utility messages",
+        "Utility messages relate to something the customer has already done or agreed to: an order, a booking, a payment, an appointment or an account update. They must be specific to that customer and must not contain promotional content.",
+        "Examples: \"Your appointment with Dr. Sharma is confirmed for 10:30 AM tomorrow\", \"Your order #4521 has been shipped\", \"Payment of ₹2,500 received. Thank you\".",
+        "Utility templates are charged per delivered message. From 1 October 2026 this also applies to utility templates sent inside an open 24-hour customer service window, which used to be free. The exception is the free entry point window that opens when a customer contacts you from a Click-to-WhatsApp ad or your Facebook Page button.",
+        "## 3. Authentication messages",
+        "Authentication messages carry one-time passwords (OTPs) and verification codes for logins, sign-ups, account recovery and transaction confirmation. Meta provides fixed template formats for these, usually with a copy-code or one-tap button.",
+        "Example: \"123456 is your verification code. Do not share it with anyone.\"",
+        "Authentication messages are charged per delivered message, at a lower rate than marketing. Businesses sending OTPs to numbers in other countries may pay a separate international authentication rate.",
+        "## 4. Service messages",
+        "Service messages are free-form replies sent while a customer service window is open, that is, within 24 hours of the customer's last message to you. They are not templates, so you can write anything relevant to the conversation. Most support-team and chatbot replies are service messages.",
+        "Until September 2026, service messages were completely free. From 1 October 2026, each business phone number gets 1,000 free service messages per month. After that, each delivered service message is charged at the same rate as a utility message in the customer's country, roughly ₹0.14 for numbers in India before taxes.",
+        "## Quick comparison",
+        "Marketing: promotions and offers. Needs a template. Charged for every message, at the highest rate.",
+        "Utility: updates about an order, booking or payment. Needs a template. Charged for every message, including inside the 24-hour window.",
+        "Authentication: OTPs and verification codes. Needs a template. Charged for every message.",
+        "Service: free-form replies within 24 hours of the customer's message. No template needed. First 1,000 per phone number each month are free.",
+        "## Common mistakes to avoid",
+        "Adding a promotional line to a utility template, such as \"Your order has shipped. Shop again for 10% off!\", turns it into marketing. Meta can recategorise the template, and you will pay the marketing rate.",
+        "Sending a marketing template when a free-form service reply would do. If the customer has written to you in the last 24 hours, a normal reply is often enough and costs far less.",
+        "Ignoring the free entry point window. Enquiries that come from Click-to-WhatsApp ads open a free window of up to 7 days. Planning your follow-up messages within that period can cut costs significantly.",
+        "Meta revises rates from time to time, so always check the latest rate card before budgeting. Turiya Infotech can review your templates, make sure each one sits in the right category, and design message flows that keep costs low. Send us a message on WhatsApp to get started."
+      ]
+    },
+    {
       slug: "what-is-whatsapp-business-api-and-how-can-businesses-use-it",
       title: "What is WhatsApp Business API and How Can Businesses Use It?",
       category: "WhatsApp & CPaaS",
@@ -44,7 +116,6 @@ export default function BlogsPage({ slug, onNavigate }: BlogsPageProps) {
       date: "July 07, 2026",
       readTime: "6 min read",
       author: "Turiya Editorial Team",
-      isSample: true,
       content: [
         "WhatsApp Business API is a professional communication solution for businesses that want to communicate with customers at scale. Unlike the regular WhatsApp app, the API is designed for structured business messaging, automation, chatbot integration, team access, and software connectivity.",
         "Businesses can use WhatsApp Business API to send appointment reminders, order updates, offers, payment reminders, admission communication, healthcare messages, customer support replies, and campaign updates.",
@@ -97,7 +168,6 @@ export default function BlogsPage({ slug, onNavigate }: BlogsPageProps) {
       date: "June 22, 2026",
       readTime: "5 min read",
       author: "Systems Architecture Team",
-      isSample: true,
       content: [
         "Every communication channel has its own strength. WhatsApp is excellent for rich conversations, images, buttons, and chatbot automation. SMS is useful for quick alerts and wide reach. RCS is useful for branded, interactive, and rich mobile messaging.",
         "A strong communication strategy does not depend on only one channel. Businesses can use WhatsApp for engagement, SMS for reminders, and RCS for rich promotional campaigns.",
@@ -113,15 +183,6 @@ export default function BlogsPage({ slug, onNavigate }: BlogsPageProps) {
       date: "June 18, 2026",
       readTime: "6 min read",
       author: "Customer Success Team"
-    },
-    {
-      slug: "marketing-utility-authentication-and-service-messages-explained",
-      title: "Marketing, Utility, Authentication, and Service Messages: Explained Simply",
-      category: "WhatsApp & CPaaS",
-      excerpt: "A crystal-clear guide explaining Meta's four official message category buckets, including registration and fee pricing impact per category.",
-      date: "June 14, 2026",
-      readTime: "5 min read",
-      author: "Compliance Specialist"
     },
     {
       slug: "how-to-plan-a-whatsapp-campaign-for-better-response",
@@ -207,7 +268,6 @@ export default function BlogsPage({ slug, onNavigate }: BlogsPageProps) {
       date: "April 24, 2026",
       readTime: "5 min read",
       author: "Healthcare Tech Specialist",
-      isSample: true,
       content: [
         "Doctors and clinics receive repeated questions every day about appointment availability, consultation timings, fees, reports, location, follow-ups, and reminders. Handling these manually can take a lot of staff time and can also lead to missed enquiries.",
         "A chatbot can help clinics automate these common conversations. Patients can use the chatbot to book appointments, get clinic timings, receive reminders, submit basic details, and ask common questions.",
@@ -418,11 +478,17 @@ export default function BlogsPage({ slug, onNavigate }: BlogsPageProps) {
 
           {/* Post Body Content */}
           <div className="prose prose-slate max-w-none space-y-6 text-slate-700 leading-relaxed text-sm sm:text-base">
-            {paragraphs.map((p, idx) => (
-              <p key={idx} className="font-light">
-                {p}
-              </p>
-            ))}
+            {paragraphs.map((p, idx) =>
+              p.startsWith("## ") ? (
+                <h2 key={idx} className="text-xl sm:text-2xl font-bold tracking-tight text-primary font-display pt-4">
+                  {p.slice(3)}
+                </h2>
+              ) : (
+                <p key={idx} className="font-light">
+                  {p}
+                </p>
+              )
+            )}
           </div>
 
           {/* CTA Banner Section inside Blog Post */}
